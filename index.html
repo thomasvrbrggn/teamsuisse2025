@@ -7,91 +7,103 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <style>
         :root {
-            --eurovision-blue: #030b27;
-            --eurovision-light: #f8f9fa;
-            --eurovision-accent: #20df9e;
+            --eurovision-pink: #f93b80;
+            --eurovision-red: #f03c2b;
+            --eurovision-dark: #1A0406;
+            --eurovision-light: #ffffff;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000000;
+            color: var(--eurovision-light);
         }
         
         .navbar {
-            background-color: var(--eurovision-blue);
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
         }
         
         .header-banner {
-            background: linear-gradient(rgba(3, 11, 39, 0.7), rgba(3, 11, 39, 0.9)), 
-                        url('https://eurovision.tv/sites/default/files/styles/hp_banner/public/media/image/2024-08/Drohne%20Rhein%20M%C3%BCnster_DJI_0517.jpg');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(45deg, var(--eurovision-dark) 0%, var(--eurovision-red) 50%, var(--eurovision-pink) 100%); 
             color: white;
             padding: 80px 0;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(249, 59, 128, 0.3) 100%);
+            background-size: 20px 20px;
+            opacity: 0.8;
+            z-index: 0;
+        }
+        
+        .header-banner .container {
+            position: relative;
+            z-index: 1;
         }
         
         .btn-primary {
-            background-color: var(--eurovision-blue);
-            border-color: var(--eurovision-blue);
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
+            border: none;
+            font-weight: bold;
         }
         
         .btn-primary:hover {
-            background-color: #0d1b4d;
-            border-color: #0d1b4d;
+            background: linear-gradient(90deg, var(--eurovision-pink) 0%, var(--eurovision-red) 100%);
+            border: none;
         }
         
         .btn-success {
-            background-color: var(--eurovision-accent);
-            border-color: var(--eurovision-accent);
+            background-color: var(--eurovision-red);
+            border-color: var(--eurovision-red);
         }
         
         .card {
             margin-bottom: 20px;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
+            background-color: var(--eurovision-dark);
+            color: var(--eurovision-light);
+            border: none;
         }
         
         .card:hover {
             transform: translateY(-5px);
         }
         
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .country-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--eurovision-blue);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        
-        .nav-pills .nav-link.active {
-            background-color: var(--eurovision-blue);
+        .country-flag {
+            font-size: 1.5rem;
+            margin-right: 8px;
         }
         
         .form-section {
-            background-color: white;
+            background: linear-gradient(135deg, var(--eurovision-dark) 0%, #3a0a11 100%);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             margin-bottom: 30px;
+            border: 1px solid rgba(249, 59, 128, 0.2);
         }
         
         .selected-entry {
-            background-color: var(--eurovision-light);
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
@@ -102,6 +114,20 @@
         
         .modal-dialog {
             max-width: 800px;
+        }
+        
+        .modal-content {
+            background-color: var(--eurovision-dark);
+            color: var(--eurovision-light);
+            border: 1px solid var(--eurovision-pink);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid rgba(249, 59, 128, 0.2);
+        }
+        
+        .modal-footer {
+            border-top: 1px solid rgba(249, 59, 128, 0.2);
         }
         
         .youtube-embed {
@@ -125,7 +151,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--eurovision-blue);
+            background: radial-gradient(circle, var(--eurovision-dark) 0%, #000000 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -133,12 +159,14 @@
         }
         
         .password-container {
-            background: white;
-            padding: 30px;
+            background: linear-gradient(135deg, #250911 0%, #3a0a11 100%);
+            padding: 50px;
             border-radius: 10px;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
             text-align: center;
+            border: 1px solid rgba(249, 59, 128, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
         .results-table {
@@ -147,7 +175,7 @@
         }
         
         .results-table th {
-            background-color: var(--eurovision-blue);
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
             color: white;
         }
         
@@ -155,27 +183,147 @@
             display: none;
         }
         
-        @media (max-width: 768px) {
-            .header-banner {
-                padding: 40px 0;
-            }
-            
-            .card-img-top {
-                height: 150px;
-            }
+        .participant-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(249, 59, 128, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .participant-item:hover {
+            background-color: rgba(249, 59, 128, 0.1);
+            border-color: rgba(249, 59, 128, 0.3);
+        }
+        
+        .participant-item h5 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .participant-item p {
+            margin-bottom: 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(249, 59, 128, 0.2);
+            color: white;
+        }
+        
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: var(--eurovision-pink);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(249, 59, 128, 0.25);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        footer {
+            background-color: var(--eurovision-dark) !important;
+            border-top: 1px solid rgba(249, 59, 128, 0.2);
+        }
+        
+        /* Removed logo styles */
+        
+        .heart-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--eurovision-pink) 3px, transparent 4px);
+            background-size: 30px 30px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .alert-info {
+            background-color: rgba(0, 123, 255, 0.1);
+            border-color: rgba(0, 123, 255, 0.3);
+            color: #8bb9ff;
+        }
+        
+        .alert-primary {
+            background-color: rgba(249, 59, 128, 0.1);
+            border-color: rgba(249, 59, 128, 0.3);
+            color: #ff9dc0;
+        }
+        
+        .badge {
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
+        }
+        
+        .thank-you-message {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(249, 59, 128, 0.1) 0%, rgba(240, 60, 43, 0.1) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(249, 59, 128, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .thank-you-message h2 {
+            color: var(--eurovision-pink);
+            margin-bottom: 15px;
+        }
+        
+        .btn-red-sebastian {
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
+            color: white;
+            border: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-red-sebastian:hover {
+            background: linear-gradient(90deg, var(--eurovision-pink) 0%, var(--eurovision-red) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Red Sebastian typografie */
+        .red-sebastian-title {
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--eurovision-red) 0%, var(--eurovision-pink) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 10px 0;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <!-- Password Protection -->
     <div class="password-screen" id="passwordScreen">
+        <div class="heart-pattern"></div>
         <div class="password-container">
-            <h2 class="mb-4">VRT Team Pronostiek</h2>
+            <h2 class="mb-4 red-sebastian-title">EUROVISIE PRONOSTIEK</h2>
             <p class="mb-4">Voer het wachtwoord in om toegang te krijgen tot de Eurovisiesongfestival 2025 pronostiek.</p>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="passwordInput" placeholder="Wachtwoord">
+            <div class="mb-4">
+                <input type="password" class="form-control form-control-lg py-3" id="passwordInput" placeholder="Wachtwoord">
             </div>
-            <button class="btn btn-primary" id="submitPassword">Inloggen</button>
+            <button class="btn btn-red-sebastian btn-lg py-3 px-5 w-100" id="submitPassword">INLOGGEN</button>
             <p class="text-danger mt-3 hidden" id="passwordError">Onjuist wachtwoord. Probeer opnieuw.</p>
         </div>
     </div>
@@ -184,7 +332,9 @@
     <div id="mainContent" class="hidden">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">VRT Team Eurovisie 2025</a>
+                <a class="navbar-brand" href="#">
+                    <span>VRT Team</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -196,17 +346,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#pronostiek">Mijn Pronostiek</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#resultaten">Resultaten</a>
-                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <header class="header-banner">
+            <div class="heart-pattern"></div>
             <div class="container">
-                <h1>Eurovisiesongfestival 2025</h1>
+                <h1 class="red-sebastian-title">EUROVISIESONGFESTIVAL 2025</h1>
                 <h2>Basel, Zwitserland</h2>
                 <p class="lead">VRT Team Pronostiek</p>
             </div>
@@ -215,7 +363,7 @@
         <div class="container mb-5">
             <section id="deelnemers" class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Deelnemers</h2>
+                    <h2 class="red-sebastian-title mb-0">DEELNEMERS</h2>
                     <div class="input-group w-50">
                         <input type="text" class="form-control" id="searchInput" placeholder="Zoek op land, artiest of lied...">
                         <button class="btn btn-primary" type="button">
@@ -224,75 +372,32 @@
                     </div>
                 </div>
 
-                <ul class="nav nav-pills mb-4" id="participantTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="all-tab" data-bs-toggle="pill" data-bs-target="#all" type="button" role="tab">
-                            Alle deelnemers
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="semi1-tab" data-bs-toggle="pill" data-bs-target="#semi1" type="button" role="tab">
-                            Eerste halve finale
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="semi2-tab" data-bs-toggle="pill" data-bs-target="#semi2" type="button" role="tab">
-                            Tweede halve finale
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="final-tab" data-bs-toggle="pill" data-bs-target="#final" type="button" role="tab">
-                            Finale
-                        </button>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="participantTabContent">
-                    <!-- Alle deelnemers -->
-                    <div class="tab-pane fade show active" id="all" role="tabpanel">
-                        <div class="row" id="allParticipants">
-                            <!-- Wordt dynamisch gevuld door JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <!-- Eerste halve finale -->
-                    <div class="tab-pane fade" id="semi1" role="tabpanel">
-                        <div class="row" id="semi1Participants">
-                            <!-- Wordt dynamisch gevuld door JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <!-- Tweede halve finale -->
-                    <div class="tab-pane fade" id="semi2" role="tabpanel">
-                        <div class="row" id="semi2Participants">
-                            <!-- Wordt dynamisch gevuld door JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <!-- Finale -->
-                    <div class="tab-pane fade" id="final" role="tabpanel">
-                        <div class="row" id="finalParticipants">
-                            <!-- Wordt dynamisch gevuld door JavaScript -->
-                        </div>
-                    </div>
+                <div class="row" id="allParticipants">
+                    <!-- Wordt dynamisch gevuld door JavaScript -->
                 </div>
             </section>
 
-            <section id="pronostiek" class="form-section">
-                <h2 class="mb-4">Mijn Pronostiek</h2>
+            <section id="pronostiek" class="form-section" data-submitted="false">
+                <h2 class="red-sebastian-title mb-4">MIJN PRONOSTIEK</h2>
                 <form id="pronostiekForm">
                     <div class="mb-3">
-                        <label for="naam" class="form-label">Naam</label>
-                        <input type="text" class="form-control" id="naam" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <label for="deelnemer" class="form-label">Wie ben je?</label>
+                        <select class="form-control" id="deelnemer" required>
+                            <option value="" selected disabled>Selecteer je naam</option>
+                            <option value="Birgit">Birgit</option>
+                            <option value="Els">Els</option>
+                            <option value="Johfrah">Johfrah</option>
+                            <option value="Louise">Louise</option>
+                            <option value="Michiel">Michiel</option>
+                            <option value="Nikolaas">Nikolaas</option>
+                            <option value="Peter">Peter</option>
+                            <option value="Thomas">Thomas</option>
+                        </select>
                     </div>
                     
                     <div class="mb-4">
                         <label class="form-label">Jouw Top 5</label>
-                        <p class="text-muted">Kies 5 landen en sleep ze in je voorspelde volgorde</p>
+                        <p class="text-muted">Kies 5 landen en sleep ze in je voorspelde volgorde. Let op: je kunt slechts één keer je pronostiek indienen!</p>
                         
                         <div id="selectedEntries" class="mb-3">
                             <div class="alert alert-info">Klik op landen in de lijst hierboven om ze toe te voegen aan je Top 5.</div>
@@ -303,15 +408,21 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary" id="submitPronostiek">Opslaan</button>
+                    <button type="submit" class="btn btn-red-sebastian w-100 py-2" id="submitPronostiek">SLECHTS ÉÉN KANS! BEVESTIG MIJN PRONOSTIEK</button>
                 </form>
+                
+                <div id="thankYouMessage" class="thank-you-message hidden">
+                    <h2>Bedankt voor je deelname!</h2>
+                    <p>Je pronostiek is opgeslagen. Je kunt deze niet meer wijzigen.</p>
+                    <p>Bekijk hieronder de huidige stand van het team.</p>
+                </div>
             </section>
 
-            <section id="resultaten" class="form-section">
-                <h2 class="mb-4">Team Resultaten</h2>
+            <section id="resultaten" class="form-section hidden">
+                <h2 class="red-sebastian-title mb-4">TEAM RESULTATEN</h2>
                 <p>Hier kun je alle voorspellingen bekijken en de gezamenlijke teamvoorspelling zien.</p>
                 
-                <table class="table results-table">
+                <table class="table results-table table-dark">
                     <thead>
                         <tr>
                             <th>Positie</th>
@@ -331,7 +442,7 @@
                     <!-- Wordt dynamisch gevuld door JavaScript -->
                 </div>
                 
-                <button class="btn btn-success mt-4" id="exportResults">Exporteren als CSV</button>
+                <button class="btn btn-red-sebastian mt-4" id="exportResults">Exporteren als CSV</button>
             </section>
         </div>
 
@@ -339,7 +450,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>Eurovisiesongfestival 2025</h5>
+                        <h5 class="mb-2">Eurovisiesongfestival 2025</h5>
                         <p>13, 15 en 17 mei 2025 - Basel, Zwitserland</p>
                     </div>
                     <div class="col-md-6 text-md-end">
@@ -355,9 +466,10 @@
     <div class="modal fade" id="participantModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="heart-pattern"></div>
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle">Land - Artiest</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="youtube-embed mb-4">
@@ -367,8 +479,31 @@
                     <p id="modalDescription">Beschrijving van het liedje en de artiest...</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
-                    <button type="button" class="btn btn-primary" id="addToTopFive">Toevoegen aan mijn Top 5</button>
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Sluiten</button>
+                    <button type="button" class="btn btn-red-sebastian" id="addToTopFive">Toevoegen aan mijn Top 5</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="heart-pattern"></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Bevestig je keuze</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <strong>Let op!</strong> Je kunt je pronostiek maar één keer indienen. Ben je zeker van je selectie?
+                    </div>
+                    <p>Na bevestiging kun je je keuzes niet meer wijzigen.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annuleren</button>
+                    <button type="button" class="btn btn-red-sebastian" id="confirmSubmission">Ja, ik ben zeker</button>
                 </div>
             </div>
         </div>
@@ -381,7 +516,7 @@
     
     <script>
         // Wachtwoordbeveiliging
-        const correctPassword = "eurovisieteam2025"; // Verander dit naar het gewenste wachtwoord
+        const correctPassword = "Nikolaasje"; // Aangepast wachtwoord
         
         document.getElementById('submitPassword').addEventListener('click', function() {
             const passwordInput = document.getElementById('passwordInput').value;
@@ -400,50 +535,375 @@
             }
         });
 
-        // Eurovision 2025 deelnemers data
+        // Eurovision 2025 deelnemers data met landvlaggen
         const participants = [
             {
                 id: 1,
                 country: "Albanië",
+                flag: "🇦🇱",
                 artist: "Besa",
                 song: "Titan",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/DSC_3336_V2.jpg",
+                youtubeId: "nDMJ3hJU7o8",
+                description: "Besa vertegenwoordigt Albanië met het krachtige nummer 'Titan' dat een mix is van traditionele Albanese geluiden en moderne pop."
+            },
+            {
+                id: 2,
+                country: "Armenië",
+                flag: "🇦🇲",
+                artist: "LADANIVA",
+                song: "Jako",
+                youtubeId: "GpwCmjxlawc",
+                description: "LADANIVA brengt een mix van traditionele Armeense muziek met moderne wereldmuziek in hun nummer 'Jako'."
+            },
+            {
+                id: 3,
+                country: "Australië",
+                flag: "🇦🇺",
+                artist: "Go-Jo",
+                song: "Milkshake Man",
+                youtubeId: "KwJhE77xpW4",
+                description: "Australië stuurt Go-Jo naar Eurovision met het catchy 'Milkshake Man', een moderne popnummer met elektronische invloeden."
+            },
+            {
+                id: 4,
+                country: "Oostenrijk",
+                flag: "🇦🇹",
+                artist: "JJ",
+                song: "Wasted Love",
+                youtubeId: "7EBsoEm-eDU",
+                description: "JJ vertegenwoordigt Oostenrijk met 'Wasted Love', een emotionele ballad over verloren liefde en hoop."
+            },
+            {
+                id: 5,
+                country: "Azerbeidzjan",
+                flag: "🇦🇿",
+                artist: "Mamagama",
+                song: "Run With U",
+                youtubeId: "qf_xsIfAEFs",
+                description: "Mamagama brengt voor Azerbeidzjan het energieke nummer 'Run With U', dat Azeri volksinvloeden combineert met moderne popmuziek."
+            },
+            {
+                id: 6,
+                country: "België",
+                flag: "🇧🇪",
+                artist: "Red Sebastian",
+                song: "Strobe Lights",
+                youtubeId: "Boz6DZCFVGk",
+                description: "Red Sebastian vertegenwoordigt België met 'Strobe Lights', een dancenummer met elektronische invloeden dat een verhaal vertelt over het nachtleven."
+            },
+            {
+                id: 7,
+                country: "Kroatië",
+                flag: "🇭🇷",
+                artist: "Marko Bošnjak",
+                song: "Poison Cake",
+                youtubeId: "PmK65Ae2iRU",
+                description: "Kroatië stuurt Marko Bošnjak met het intrigerende nummer 'Poison Cake', dat elementen van traditionele Balkanmuziek combineert met moderne pop."
+            },
+            {
+                id: 8,
+                country: "Cyprus",
+                flag: "🇨🇾",
+                artist: "Theo Evan",
+                song: "Shh",
+                youtubeId: "OKa0OFd6kG8",
+                description: "Theo Evan vertegenwoordigt Cyprus met het mysterieuze en sensuele nummer 'Shh', dat mediterrane klanken mengt met moderne R&B."
+            },
+            {
+                id: 9,
+                country: "Tsjechië",
+                flag: "🇨🇿",
+                artist: "ADONXS",
+                song: "Kiss Kiss Goodbye",
+                youtubeId: "j0BYwRYlQQI",
+                description: "ADONXS brengt voor Tsjechië het pakkende 'Kiss Kiss Goodbye', een pop/dance nummer dat gaat over het loslaten van relaties."
+            },
+            {
+                id: 10,
+                country: "Denemarken",
+                flag: "🇩🇰",
+                artist: "Sissal",
+                song: "Hallucination",
+                youtubeId: "2DFKJBppnjk",
+                description: "Sissal vertegenwoordigt Denemarken met 'Hallucination', een dromerige popsong met noordse invloeden die een surreële liefde beschrijft."
+            },
+            {
+                id: 11,
+                country: "Estland",
+                flag: "🇪🇪",
+                artist: "Tommy Cash",
+                song: "Espresso Macchiato",
+                youtubeId: "u8GKufdG1bY",
+                description: "Estland stuurt Tommy Cash met het controversiële 'Espresso Macchiato', een trap-nummer met unieke visuele elementen en provocatieve tekst."
+            },
+            {
+                id: 12,
+                country: "Finland",
+                flag: "🇫🇮",
+                artist: "Erika Vikman",
+                song: "ICH KOMME",
+                youtubeId: "ZZBfNJWu9Lw",
+                description: "Erika Vikman vertegenwoordigt Finland met 'ICH KOMME', een krachtig Duitstalig dansnummer met Finse volksinvloeden."
+            },
+            {
+                id: 13,
+                country: "Frankrijk",
+                flag: "🇫🇷",
+                artist: "Louane",
+                song: "maman",
+                youtubeId: "YkQSPvRyDo8",
+                description: "Louane zingt voor Frankrijk het emotionele 'maman', een liefdevolle ode aan moederschap die Franse chanson-elementen combineert met moderne pop."
+            },
+            {
+                id: 14,
+                country: "Georgië",
+                flag: "🇬🇪",
+                artist: "Mariam Shengelia",
+                song: "Freedom",
+                youtubeId: "FkLr8SIZoqk",
+                description: "Mariam Shengelia vertegenwoordigt Georgië met 'Freedom', een krachtig nummer over vrijheid en emancipatie met Kaukasische muzikale elementen."
+            },
+            {
+                id: 15,
+                country: "Duitsland",
+                flag: "🇩🇪",
+                artist: "Abor & Tynna",
+                song: "Baller",
+                youtubeId: "sKDdVRGwkOA",
+                description: "Abor & Tynna brengen voor Duitsland het energieke 'Baller', een urban pop-nummer met hiphop-invloeden en een aanstekelijk refrein."
+            },
+            {
+                id: 16,
+                country: "Griekenland",
+                flag: "🇬🇷",
+                artist: "Klavdia",
+                song: "Asteromáta",
+                youtubeId: "K1gDNTdxRyM",
+                description: "Klavdia vertegenwoordigt Griekenland met 'Asteromáta', een moderne interpretatie van traditionele Griekse muziek met elektronische elementen."
+            },
+            {
+                id: 17,
+                country: "IJsland",
+                flag: "🇮🇸",
+                artist: "VÆB",
+                song: "RÓA",
+                youtubeId: "XOSwPfqQAGo",
+                description: "IJsland stuurt VÆB met het mystieke 'RÓA', een nummer dat IJslandse natuurelementen en folklore combineert met moderne elektronische muziek."
+            },
+            {
+                id: 18,
+                country: "Ierland",
+                flag: "🇮🇪",
+                artist: "EMMY",
+                song: "Laika Party",
+                youtubeId: "LmepLtipILU",
+                description: "EMMY vertegenwoordigt Ierland met het experimentele 'Laika Party', dat ruimtevaart-thema's mengt met keltische klanken en moderne dance."
+            },
+            {
+                id: 19,
+                country: "Israël",
+                flag: "🇮🇱",
+                artist: "Yuval Raphael",
+                song: "New Day Will Rise",
+                youtubeId: "yKFxwT0QYdQ",
+                description: "Yuval Raphael zingt voor Israël het hoopvolle 'New Day Will Rise', een emotievolle ballad met traditionele Midden-Oosterse muziekinvloeden."
+            },
+            {
+                id: 20,
+                country: "Italië",
+                flag: "🇮🇹",
+                artist: "Lucio Corsi",
+                song: "Volevo Essere Un Duro",
+                youtubeId: "UJHvnJkBSVo",
+                description: "Lucio Corsi vertegenwoordigt Italië met 'Volevo Essere Un Duro', een nummer dat klassieke Italiaanse cantautore-stijl combineert met moderne pop-rock."
+            },
+            {
+                id: 21,
+                country: "Letland",
+                flag: "🇱🇻",
+                artist: "Tautumeitas",
+                song: "Bur Man Laimi",
+                youtubeId: "xGlGUAOjBxw",
+                description: "Tautumeitas brengt voor Letland een traditioneel folk nummer 'Bur Man Laimi', dat Baltische vocale harmonieën combineert met moderne instrumentatie."
+            },
+            {
+                id: 22,
+                country: "Litouwen",
+                flag: "🇱🇹",
+                artist: "Katarsis",
+                song: "Tavo Akys",
+                youtubeId: "nWfGbkKzwjc",
+                description: "Katarsis vertegenwoordigt Litouwen met 'Tavo Akys', een alternatief rocknummer met Baltische folk-elementen en introspectieve teksten."
+            },
+            {
+                id: 23,
+                country: "Luxemburg",
+                flag: "🇱🇺",
+                artist: "Laura Thorn",
+                song: "La Poupée Monte Le Son",
+                youtubeId: "x2aNvtxDsS8",
+                description: "Laura Thorn brengt voor Luxemburg 'La Poupée Monte Le Son', een Franse discosong die de terugkeer markeert van Luxemburg op het Eurovision-podium na lange afwezigheid."
+            },
+            {
+                id: 24,
+                country: "Malta",
+                flag: "🇲🇹",
+                artist: "Miriana Conte",
+                song: "SERVING",
+                youtubeId: "TqXDVOLx3fY",
+                description: "Miriana Conte vertegenwoordigt Malta met 'SERVING', een eigentijds pop-nummer met sterke empowerment-boodschap en mediterrane invloeden."
+            },
+            {
+                id: 25,
+                country: "Montenegro",
+                flag: "🇲🇪",
+                artist: "Nina Žižić",
+                song: "Dobrodošli",
+                youtubeId: "WDa8kEbw-Qo",
+                description: "Nina Žižić zingt voor Montenegro 'Dobrodošli', een nummer dat Balkan-ritmes combineert met moderne pop en een boodschap van gastvrijheid."
+            },
+            {
+                id: 26,
+                country: "Nederland",
+                flag: "🇳🇱",
+                artist: "Claude",
+                song: "C'est La Vie",
+                youtubeId: "_6WEOC-hT38",
+                description: "Claude vertegenwoordigt Nederland met 'C'est La Vie', een vrolijk Frans- en Nederlandstalig popnummer met retro-invloeden uit de jaren 80."
+            },
+            {
+                id: 27,
+                country: "Noorwegen",
+                flag: "🇳🇴",
+                artist: "Kyle Alessandro",
+                song: "Lighter",
+                youtubeId: "A4LvEY5Z0Y4",
+                description: "Kyle Alessandro zingt voor Noorwegen het emotionele 'Lighter', een poëtische pop-ballad met Scandinavische elementen over het vinden van licht in duisternis."
+            },
+            {
+                id: 28,
+                country: "Polen",
+                flag: "🇵🇱",
+                artist: "Justyna Steczkowska",
+                song: "GAJA",
+                youtubeId: "QiQ6xEfcR_0",
+                description: "Justyna Steczkowska vertegenwoordigt Polen met 'GAJA', een theatraal nummer dat Slavische volksmuziek combineert met opera-elementen en elektronische beats."
+            },
+            {
+                id: 29,
+                country: "Portugal",
+                flag: "🇵🇹",
+                artist: "NAPA",
+                song: "Deslocado",
+                youtubeId: "D-WKeoFxCTQ",
+                description: "NAPA brengt voor Portugal het melancholische 'Deslocado', een nummer dat traditionele fado mengt met alternatieve rock en autobiografische tekst."
+            },
+            {
+                id: 30,
+                country: "San Marino",
+                flag: "🇸🇲",
+                artist: "Gabry Ponte",
+                song: "Tutta L'Italia",
+                youtubeId: "l5H7UmXL0jQ",
+                description: "Gabry Ponte vertegenwoordigt San Marino met 'Tutta L'Italia', een energieke dance-hit die Italiaanse populaire cultuur celebreert met electronische beats."
+            },
+            {
+                id: 31,
+                country: "Servië",
+                flag: "🇷🇸",
+                artist: "Princ",
+                song: "Mila",
+                youtubeId: "eglFj5LEWqQ",
+                description: "Princ zingt voor Servië het emotionele 'Mila', een ballad die traditionele Balkan-melodieën combineert met moderne urban elementen."
+            },
+            {
+                id: 32,
+                country: "Slovenië",
+                flag: "🇸🇮",
+                artist: "Klemen",
+                song: "How Much Time Do We Have Left",
+                youtubeId: "C6TvU0YbQFE",
+                description: "Klemen vertegenwoordigt Slovenië met 'How Much Time Do We Have Left', een reflectieve indie-pop song met milieuboodschap en Alpijnse invloeden."
+            },
+            {
+                id: 33,
+                country: "Spanje",
+                flag: "🇪🇸",
+                artist: "Melody",
+                song: "ESA DIVA",
+                youtubeId: "X1-6ExpVbHQ",
+                description: "Melody brengt voor Spanje het opzwepende 'ESA DIVA', een flamenco-geïnspireerd pop-nummer met Latin ritmes en feministisch thema."
+            },
+            {
+                id: 34,
+                country: "Zweden",
+                flag: "🇸🇪",
+                artist: "KAJ",
+                song: "Bara Bada Bastu",
+                youtubeId: "U5qPoUyNN2g",
+                description: "KAJ vertegenwoordigt Zweden met het unieke 'Bara Bada Bastu', een traditie-kritisch nummer dat Zweedse sauna-cultuur combineert met catchy schlager-pop."
+            },
+            {
+                id: 35,
+                country: "Zwitserland",
+                flag: "🇨🇭",
+                artist: "Zoë Më",
+                song: "Voyage",
+                youtubeId: "0yR0YvPcQ2g",
+                description: "Zoë Më vertegenwoordigt gastland Zwitserland met 'Voyage', een meertalig popnummer dat Alpijnse elementen combineert met moderne elektronische beats."
+            },
+            {
+                id: 36,
+                country: "Oekraïne",
+                flag: "🇺🇦",
+                artist: "Ziferblat",
+                song: "Bird of Pray",
+                youtubeId: "rJaMQb6SpJc",
+                description: "Ziferblat brengt voor Oekraïne het intense 'Bird of Pray', een nummer dat traditionele Oekraïense volksinvloeden mengt met moderne alternatieve rock."
+            },
+            {
+                id: 37,
+                country: "Verenigd Koninkrijk",
+                flag: "🇬🇧",
+                artist: "Remember Monday",
+                song: "What The Hell Just Happened?",
                 youtubeId: "WPZKaWYxKWI",
-                semifinal: 0, // Directe finalist
-                qualified: true,
                 description: "Remember Monday vertegenwoordigt het Verenigd Koninkrijk met het energieke 'What The Hell Just Happened?', een country-pop nummer met Britse folk-invloeden."
             }
         ];
 
-        // Constanten voor finalisten en halve finales
-        const directFinalists = participants.filter(p => p.semifinal === 0);
-        const firstSemiFinalList = [
-            "Albanië", "Azerbeidzjan", "België", "Kroatië", "Cyprus", "Estland",
-            "IJsland", "Nederland", "Noorwegen", "Polen", "Portugal", "San Marino",
-            "Slovenië", "Zweden", "Oekraïne"
-        ];
-        const secondSemiFinalList = [
-            "Armenië", "Australië", "Oostenrijk", "Tsjechië", "Denemarken", "Finland",
-            "Georgië", "Griekenland", "Ierland", "Israël", "Letland", "Litouwen",
-            "Luxemburg", "Malta", "Montenegro", "Servië"
-        ];
-
-        // Deelnemers sorteren op halve finale
-        const firstSemiFinal = participants.filter(p => firstSemiFinalList.includes(p.country));
-        const secondSemiFinal = participants.filter(p => secondSemiFinalList.includes(p.country));
-        const finalParticipants = [...directFinalists]; // Later kunnen gekwalificeerde deelnemers worden toegevoegd
-
         // Pronostiek opslag
         let predictions = [];
         let selectedEntries = [];
+        let resultsVisible = false;
+        
+        // Check of de gebruiker al heeft ingediend
+        function hasUserSubmitted(userName) {
+            return predictions.some(prediction => prediction.name === userName);
+        }
+        
+        // Update form status bij verandering van deelnemer
+        function updateFormStatus() {
+            const deelnemerSelect = document.getElementById('deelnemer');
+            const selectedName = deelnemerSelect.value;
+            
+            if (selectedName && hasUserSubmitted(selectedName)) {
+                // Verberg het formulier en toon bedankbericht
+                document.getElementById('pronostiekForm').classList.add('hidden');
+                document.getElementById('thankYouMessage').classList.remove('hidden');
+                document.getElementById('pronostiek').setAttribute('data-submitted', 'true');
+            } else {
+                // Toon het formulier en verberg bedankbericht
+                document.getElementById('pronostiekForm').classList.remove('hidden');
+                document.getElementById('thankYouMessage').classList.add('hidden');
+                document.getElementById('pronostiek').setAttribute('data-submitted', 'false');
+            }
+        }
 
         // DOM is geladen
         document.addEventListener('DOMContentLoaded', function() {
-            // Vul de deelnemers in de tabbladen
+            // Vul alle deelnemers
             renderParticipants('allParticipants', participants);
-            renderParticipants('semi1Participants', firstSemiFinal);
-            renderParticipants('semi2Participants', secondSemiFinal);
-            renderParticipants('finalParticipants', finalParticipants);
 
             // Zoekfunctionaliteit
             document.getElementById('searchInput').addEventListener('input', function(e) {
@@ -466,7 +926,7 @@
                 }
             });
 
-            // Formulier verzenden
+            // Formulier verzenden met confirmatie modal
             document.getElementById('pronostiekForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -475,13 +935,32 @@
                     return;
                 }
                 
-                const name = document.getElementById('naam').value;
-                const email = document.getElementById('email').value;
+                if (!document.getElementById('deelnemer').value) {
+                    alert('Selecteer je naam uit de lijst!');
+                    return;
+                }
+                
+                // Toon de bevestigingsmodal
+                const confirmModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                confirmModal.show();
+            });
+            
+            // Defineer wat gebeurt bij definitieve bevestiging
+            document.getElementById('confirmSubmission').addEventListener('click', function() {
+                const deelnemer = document.getElementById('deelnemer').value;
+                
+                // Controleer of deze deelnemer al een voorspelling heeft
+                const existingPrediction = predictions.find(p => p.name === deelnemer);
+                if (existingPrediction) {
+                    alert('Je hebt al een voorspelling ingediend!');
+                    const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+                    confirmModal.hide();
+                    return;
+                }
                 
                 // Nieuwe voorspelling toevoegen
                 const prediction = {
-                    name,
-                    email,
+                    name: deelnemer,
                     entries: [...selectedEntries]
                 };
                 
@@ -490,16 +969,23 @@
                 // Sla de voorspellingen op in localStorage
                 saveToLocalStorage();
                 
+                // Verberg het formulier en toon bedankbericht
+                document.getElementById('pronostiekForm').classList.add('hidden');
+                document.getElementById('thankYouMessage').classList.remove('hidden');
+                
+                // Toon resultaten sectie
+                document.getElementById('resultaten').classList.remove('hidden');
+                resultsVisible = true;
+                
                 // Update resultaten tabel
                 updateResults();
                 
-                // Reset het formulier
-                this.reset();
-                selectedEntries = [];
-                document.getElementById('selectedEntries').innerHTML = '<div class="alert alert-info">Klik op landen in de lijst hierboven om ze toe te voegen aan je Top 5.</div>';
-                document.getElementById('dragInstructions').classList.add('hidden');
+                // Sluit de modal
+                const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+                confirmModal.hide();
                 
-                alert('Je pronostiek is opgeslagen!');
+                // Markeer deze sectie als ingediend
+                document.getElementById('pronostiek').setAttribute('data-submitted', 'true');
                 
                 // Scroll naar resultaten
                 document.getElementById('resultaten').scrollIntoView({
@@ -514,37 +1000,46 @@
 
             // Laad opgeslagen voorspellingen
             loadFromLocalStorage();
-            updateResults();
+            
+            // Voeg event listener toe aan deelnemer dropdown
+            document.getElementById('deelnemer').addEventListener('change', updateFormStatus);
+            
+            // Laat resultaten pas zien na het indienen van een formulier
+            if (predictions.length > 0 && !resultsVisible) {
+                document.getElementById('resultaten').classList.remove('hidden');
+                resultsVisible = true;
+                updateResults();
+            }
         });
 
-        // Render deelnemers in tabbladen
+        // Render deelnemers in container
         function renderParticipants(containerId, participantList) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             
             participantList.forEach(participant => {
-                const card = document.createElement('div');
-                card.className = 'col-md-6 col-lg-4 mb-4';
-                card.innerHTML = `
-                    <div class="card h-100" data-participant-id="${participant.id}">
-                        <img src="${participant.image}" class="card-img-top" alt="${participant.country} - ${participant.artist}">
-                        <span class="country-badge">${participant.country}</span>
-                        <div class="card-body">
-                            <h5 class="card-title">${participant.artist}</h5>
-                            <p class="card-text">${participant.song}</p>
-                            <button class="btn btn-primary view-details" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant-id="${participant.id}">
-                                Bekijk details
-                            </button>
-                        </div>
-                    </div>
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+                
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                item.setAttribute('data-participant-id', participant.id);
+                item.innerHTML = `
+                    <h5>
+                        <span class="country-flag">${participant.flag}</span>
+                        ${participant.country} - ${participant.artist}
+                    </h5>
+                    <p>${participant.song}</p>
+                    <button class="btn btn-primary btn-sm view-details" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant-id="${participant.id}">
+                        Bekijk details
+                    </button>
                 `;
-                container.appendChild(card);
-            });
-            
-            // Voeg event listeners toe aan de bekijk details knoppen
-            const detailButtons = container.querySelectorAll('.view-details');
-            detailButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                col.appendChild(item);
+                container.appendChild(col);
+                
+                // Voeg event listener toe
+                const detailButton = item.querySelector('.view-details');
+                detailButton.addEventListener('click', function() {
                     const participantId = parseInt(this.getAttribute('data-participant-id'));
                     showParticipantDetails(participantId);
                 });
@@ -555,7 +1050,7 @@
         function showParticipantDetails(participantId) {
             const participant = participants.find(p => p.id === participantId);
             
-            document.getElementById('modalTitle').textContent = `${participant.country} - ${participant.artist}`;
+            document.getElementById('modalTitle').textContent = `${participant.flag} ${participant.country} - ${participant.artist}`;
             document.getElementById('modalSongTitle').textContent = participant.song;
             document.getElementById('modalDescription').textContent = participant.description;
             
@@ -569,12 +1064,12 @@
             
             if (isSelected) {
                 addButton.textContent = 'Verwijderen uit Top 5';
-                addButton.classList.remove('btn-primary');
+                addButton.classList.remove('btn-red-sebastian');
                 addButton.classList.add('btn-danger');
             } else {
                 addButton.textContent = 'Toevoegen aan Top 5';
                 addButton.classList.remove('btn-danger');
-                addButton.classList.add('btn-primary');
+                addButton.classList.add('btn-red-sebastian');
             }
             
             // Voeg event listener toe aan de knop
@@ -647,7 +1142,7 @@
                 
                 entryElement.innerHTML = `
                     <div>
-                        <strong>${index + 1}. ${entry.country}</strong> - ${entry.artist} (${entry.song})
+                        <strong>${index + 1}. ${entry.flag} ${entry.country}</strong> - ${entry.artist} (${entry.song})
                     </div>
                     <button type="button" class="btn btn-sm btn-danger remove-entry" data-participant-id="${entry.id}">
                         <i class="bi bi-x"></i> Verwijderen
@@ -699,6 +1194,7 @@
                     const participantInfo = participants.find(p => p.country === country);
                     return {
                         country,
+                        flag: participantInfo.flag,
                         points,
                         artist: participantInfo.artist,
                         song: participantInfo.song
@@ -716,7 +1212,7 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td><strong>${index + 1}</strong></td>
-                        <td>${result.country}</td>
+                        <td>${result.flag} ${result.country}</td>
                         <td>${result.artist}</td>
                         <td>${result.song}</td>
                         <td><strong>${result.points}</strong></td>
@@ -737,7 +1233,7 @@
                 prediction.entries.forEach((entry, index) => {
                     entriesHtml += `
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>${index + 1}. ${entry.country} - ${entry.artist}</span>
+                            <span>${index + 1}. ${entry.flag} ${entry.country} - ${entry.artist}</span>
                             <span class="badge bg-primary rounded-pill">${pointsScale[index]} ptn</span>
                         </li>
                     `;
@@ -745,7 +1241,7 @@
                 
                 predCard.innerHTML = `
                     <div class="card-header">
-                        <strong>${prediction.name}</strong> (${prediction.email})
+                        <strong>${prediction.name}</strong>
                     </div>
                     <ul class="list-group list-group-flush">
                         ${entriesHtml}
@@ -777,10 +1273,10 @@
             }
             
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Naam,Email,1e plaats,2e plaats,3e plaats,4e plaats,5e plaats\n";
+            csvContent += "Naam,1e plaats,2e plaats,3e plaats,4e plaats,5e plaats\n";
             
             predictions.forEach(prediction => {
-                let row = `${prediction.name},${prediction.email}`;
+                let row = `${prediction.name}`;
                 
                 // Voeg de 5 landen toe
                 for (let i = 0; i < 5; i++) {
@@ -802,400 +1298,4 @@
         }
     </script>
 </body>
-</html>default/files/styles/crop_teaser_image/public/media/image/2023-11/23_10_11-C-LINHNGUYEN_Abor-Tynna_019.jpg",
-                youtubeId: "sKDdVRGwkOA",
-                semifinal: 0, // Directe finalist
-                qualified: true,
-                description: "Abor & Tynna brengen voor Duitsland het energieke 'Baller', een urban pop-nummer met hiphop-invloeden en een aanstekelijk refrein."
-            },
-            {
-                id: 16,
-                country: "Griekenland",
-                artist: "Klavdia",
-                song: "Asteromáta",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/GR-KLAVDIA_04.jpg",
-                youtubeId: "K1gDNTdxRyM",
-                semifinal: 2,
-                qualified: false,
-                description: "Klavdia vertegenwoordigt Griekenland met 'Asteromáta', een moderne interpretatie van traditionele Griekse muziek met elektronische elementen."
-            },
-            {
-                id: 17,
-                country: "IJsland",
-                artist: "VÆB",
-                song: "RÓA",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/IMG_6644.jpg",
-                youtubeId: "XOSwPfqQAGo",
-                semifinal: 1,
-                qualified: false,
-                description: "IJsland stuurt VÆB met het mystieke 'RÓA', een nummer dat IJslandse natuurelementen en folklore combineert met moderne elektronische muziek."
-            },
-            {
-                id: 18,
-                country: "Ierland",
-                artist: "EMMY",
-                song: "Laika Party",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/v1-olemartinsandness-Emmy_134.jpg",
-                youtubeId: "LmepLtipILU",
-                semifinal: 2,
-                qualified: false,
-                description: "EMMY vertegenwoordigt Ierland met het experimentele 'Laika Party', dat ruimtevaart-thema's mengt met keltische klanken en moderne dance."
-            },
-            {
-                id: 19,
-                country: "Israël",
-                artist: "Yuval Raphael",
-                song: "New Day Will Rise",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Yuval-Raphael-PR-1-BEST.jpg",
-                youtubeId: "yKFxwT0QYdQ",
-                semifinal: 2,
-                qualified: false,
-                description: "Yuval Raphael zingt voor Israël het hoopvolle 'New Day Will Rise', een emotievolle ballad met traditionele Midden-Oosterse muziekinvloeden."
-            },
-            {
-                id: 20,
-                country: "Italië",
-                artist: "Lucio Corsi",
-                song: "Volevo Essere Un Duro",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/DSCF8932-Landscape-Credit-Simone-Biavati.jpg",
-                youtubeId: "UJHvnJkBSVo",
-                semifinal: 0, // Directe finalist
-                qualified: true,
-                description: "Lucio Corsi vertegenwoordigt Italië met 'Volevo Essere Un Duro', een nummer dat klassieke Italiaanse cantautore-stijl combineert met moderne pop-rock."
-            },
-            {
-                id: 21,
-                country: "Letland",
-                artist: "Tautumeitas",
-                song: "Bur Man Laimi",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Tautumeitas_8.jpg",
-                youtubeId: "xGlGUAOjBxw",
-                semifinal: 2,
-                qualified: false,
-                description: "Tautumeitas brengt voor Letland een traditioneel folk nummer 'Bur Man Laimi', dat Baltische vocale harmonieën combineert met moderne instrumentatie."
-            },
-            {
-                id: 22,
-                country: "Litouwen",
-                artist: "Katarsis",
-                song: "Tavo Akys",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/1-katarsis.jpg",
-                youtubeId: "nWfGbkKzwjc",
-                semifinal: 2,
-                qualified: false,
-                description: "Katarsis vertegenwoordigt Litouwen met 'Tavo Akys', een alternatief rocknummer met Baltische folk-elementen en introspectieve teksten."
-            },
-            {
-                id: 23,
-                country: "Luxemburg",
-                artist: "Laura Thorn",
-                song: "La Poupée Monte Le Son",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Laura-20.02.2025-884.jpg",
-                youtubeId: "x2aNvtxDsS8",
-                semifinal: 2,
-                qualified: false,
-                description: "Laura Thorn brengt voor Luxemburg 'La Poupée Monte Le Son', een Franse discosong die de terugkeer markeert van Luxemburg op het Eurovision-podium na lange afwezigheid."
-            },
-            {
-                id: 24,
-                country: "Malta",
-                artist: "Miriana Conte",
-                song: "SERVING",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Miriana-Official-Shoot-07.jpg",
-                youtubeId: "TqXDVOLx3fY",
-                semifinal: 2,
-                qualified: false,
-                description: "Miriana Conte vertegenwoordigt Malta met 'SERVING', een eigentijds pop-nummer met sterke empowerment-boodschap en mediterrane invloeden."
-            },
-            {
-                id: 25,
-                country: "Montenegro",
-                artist: "Nina Žižić",
-                song: "Dobrodošli",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Nina-Zizic-1.jpeg",
-                youtubeId: "WDa8kEbw-Qo",
-                semifinal: 2,
-                qualified: false,
-                description: "Nina Žižić zingt voor Montenegro 'Dobrodošli', een nummer dat Balkan-ritmes combineert met moderne pop en een boodschap van gastvrijheid."
-            },
-            {
-                id: 26,
-                country: "Nederland",
-                artist: "Claude",
-                song: "C'est La Vie",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/TB_Claude_Press_31499.jpg",
-                youtubeId: "_6WEOC-hT38",
-                semifinal: 1,
-                qualified: false,
-                description: "Claude vertegenwoordigt Nederland met 'C'est La Vie', een vrolijk Frans- en Nederlandstalig popnummer met retro-invloeden uit de jaren 80."
-            },
-            {
-                id: 27,
-                country: "Noorwegen",
-                artist: "Kyle Alessandro",
-                song: "Lighter",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/3-Kyle-Alessandro-2025-03-05-pressebilder-048-TorHakon.JPG",
-                youtubeId: "A4LvEY5Z0Y4",
-                semifinal: 1,
-                qualified: false,
-                description: "Kyle Alessandro zingt voor Noorwegen het emotionele 'Lighter', een poëtische pop-ballad met Scandinavische elementen over het vinden van licht in duisternis."
-            },
-            {
-                id: 28,
-                country: "Polen",
-                artist: "Justyna Steczkowska",
-                song: "GAJA",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Justyna-Steczkowska-main.jpg",
-                youtubeId: "QiQ6xEfcR_0",
-                semifinal: 1,
-                qualified: false,
-                description: "Justyna Steczkowska vertegenwoordigt Polen met 'GAJA', een theatraal nummer dat Slavische volksmuziek combineert met opera-elementen en elektronische beats."
-            },
-            {
-                id: 29,
-                country: "Portugal",
-                artist: "NAPA",
-                song: "Deslocado",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/07_NAPA.jpg",
-                youtubeId: "D-WKeoFxCTQ",
-                semifinal: 1,
-                qualified: false,
-                description: "NAPA brengt voor Portugal het melancholische 'Deslocado', een nummer dat traditionele fado mengt met alternatieve rock en autobiografische tekst."
-            },
-            {
-                id: 30,
-                country: "San Marino",
-                artist: "Gabry Ponte",
-                song: "Tutta L'Italia",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/240724_GabryPonte0749.jpg",
-                youtubeId: "l5H7UmXL0jQ",
-                semifinal: 1,
-                qualified: false,
-                description: "Gabry Ponte vertegenwoordigt San Marino met 'Tutta L'Italia', een energieke dance-hit die Italiaanse populaire cultuur celebreert met electronische beats."
-            },
-            {
-                id: 31,
-                country: "Servië",
-                artist: "Princ",
-                song: "Mila",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Princ-photo-2-by-Nikola-Glisic.jpeg",
-                youtubeId: "eglFj5LEWqQ",
-                semifinal: 2,
-                qualified: false,
-                description: "Princ zingt voor Servië het emotionele 'Mila', een ballad die traditionele Balkan-melodieën combineert met moderne urban elementen."
-            },
-            {
-                id: 32,
-                country: "Slovenië",
-                artist: "Klemen",
-                song: "How Much Time Do We Have Left",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Klemen_How-Much-Time-Do-We-Have-Left_3_Tomo-Brejc.jpg",
-                youtubeId: "C6TvU0YbQFE",
-                semifinal: 1,
-                qualified: false,
-                description: "Klemen vertegenwoordigt Slovenië met 'How Much Time Do We Have Left', een reflectieve indie-pop song met milieuboodschap en Alpijnse invloeden."
-            },
-            {
-                id: 33,
-                country: "Spanje",
-                artist: "Melody",
-                song: "ESA DIVA",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Melody-Eurovison44033_v1-copia.jpg",
-                youtubeId: "X1-6ExpVbHQ",
-                semifinal: 0, // Directe finalist
-                qualified: true,
-                description: "Melody brengt voor Spanje het opzwepende 'ESA DIVA', een flamenco-geïnspireerd pop-nummer met Latin ritmes en feministisch thema."
-            },
-            {
-                id: 34,
-                country: "Zweden",
-                artist: "KAJ",
-                song: "Bara Bada Bastu",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/BARABADABASTU-07C-Fotograf-Erik-Ahman.jpg",
-                youtubeId: "U5qPoUyNN2g",
-                semifinal: 1,
-                qualified: false,
-                description: "KAJ vertegenwoordigt Zweden met het unieke 'Bara Bada Bastu', een traditie-kritisch nummer dat Zweedse sauna-cultuur combineert met catchy schlager-pop."
-            },
-            {
-                id: 35,
-                country: "Zwitserland",
-                artist: "Zoë Më",
-                song: "Voyage",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/1_HR_O7A4734.jpg",
-                youtubeId: "0yR0YvPcQ2g",
-                semifinal: 0, // Directe finalist (gastland)
-                qualified: true,
-                description: "Zoë Më vertegenwoordigt gastland Zwitserland met 'Voyage', een meertalig popnummer dat Alpijnse elementen combineert met moderne elektronische beats."
-            },
-            {
-                id: 36,
-                country: "Oekraïne",
-                artist: "Ziferblat",
-                song: "Bird of Pray",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/DSC00359.jpg",
-                youtubeId: "rJaMQb6SpJc",
-                semifinal: 1,
-                qualified: false,
-                description: "Ziferblat brengt voor Oekraïne het intense 'Bird of Pray', een nummer dat traditionele Oekraïense volksinvloeden mengt met moderne alternatieve rock."
-            },
-            {
-                id: 37,
-                country: "Verenigd Koninkrijk",
-                artist: "Remember Monday",
-                song: "What The Hell Just Happened?",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2023-11/SHK-10.jpg",
-                youtubeId: "nDMJ3hJU7o8",
-                semifinal: 1,
-                qualified: false,
-                description: "Besa vertegenwoordigt Albanië met het krachtige nummer 'Titan' dat een mix is van traditionele Albanese geluiden en moderne pop."
-            },
-            {
-                id: 2,
-                country: "Armenië",
-                artist: "LADANIVA",
-                song: "Jako",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2023-12/Parg2812.jpg",
-                youtubeId: "GpwCmjxlawc",
-                semifinal: 2,
-                qualified: false,
-                description: "LADANIVA brengt een mix van traditionele Armeense muziek met moderne wereldmuziek in hun nummer 'Jako'."
-            },
-            {
-                id: 3,
-                country: "Australië",
-                artist: "Go-Jo",
-                song: "Milkshake Man",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/GoJo_JeremyKeesOrr_09.jpg",
-                youtubeId: "KwJhE77xpW4",
-                semifinal: 2,
-                qualified: false,
-                description: "Australië stuurt Go-Jo naar Eurovision met het catchy 'Milkshake Man', een moderne popnummer met elektronische invloeden."
-            },
-            {
-                id: 4,
-                country: "Oostenrijk",
-                artist: "JJ",
-                song: "Wasted Love",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-04/ESC25_AUT_JJ_full-28.jpg",
-                youtubeId: "7EBsoEm-eDU",
-                semifinal: 2,
-                qualified: false,
-                description: "JJ vertegenwoordigt Oostenrijk met 'Wasted Love', een emotionele ballad over verloren liefde en hoop."
-            },
-            {
-                id: 5,
-                country: "Azerbeidzjan",
-                artist: "Mamagama",
-                song: "Run With U",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/MAMAGAMA-1.jpg",
-                youtubeId: "qf_xsIfAEFs",
-                semifinal: 1,
-                qualified: false,
-                description: "Mamagama brengt voor Azerbeidzjan het energieke nummer 'Run With U', dat Azeri volksinvloeden combineert met moderne popmuziek."
-            },
-            {
-                id: 6,
-                country: "België",
-                artist: "Red Sebastian",
-                song: "Strobe Lights",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-04/RED-SEBASTIAN-1-adjust.jpg",
-                youtubeId: "Boz6DZCFVGk",
-                semifinal: 1,
-                qualified: false,
-                description: "Red Sebastian vertegenwoordigt België met 'Strobe Lights', een dancenummer met elektronische invloeden dat een verhaal vertelt over het nachtleven."
-            },
-            {
-                id: 7,
-                country: "Kroatië",
-                artist: "Marko Bošnjak",
-                song: "Poison Cake",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/Croatia_Poison_Cake_Marko_Bosnjak_1.jpg",
-                youtubeId: "PmK65Ae2iRU",
-                semifinal: 1,
-                qualified: false,
-                description: "Kroatië stuurt Marko Bošnjak met het intrigerende nummer 'Poison Cake', dat elementen van traditionele Balkanmuziek combineert met moderne pop."
-            },
-            {
-                id: 8,
-                country: "Cyprus",
-                artist: "Theo Evan",
-                song: "Shh",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/SHH-COVER-PHOTO-2.jpg",
-                youtubeId: "OKa0OFd6kG8",
-                semifinal: 1,
-                qualified: false,
-                description: "Theo Evan vertegenwoordigt Cyprus met het mysterieuze en sensuele nummer 'Shh', dat mediterrane klanken mengt met moderne R&B."
-            },
-            {
-                id: 9,
-                country: "Tsjechië",
-                artist: "ADONXS",
-                song: "Kiss Kiss Goodbye",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-05/DAVID_URBAN_ADONXS_COVER_ART_03-kopie.jpg",
-                youtubeId: "j0BYwRYlQQI",
-                semifinal: 2,
-                qualified: false,
-                description: "ADONXS brengt voor Tsjechië het pakkende 'Kiss Kiss Goodbye', een pop/dance nummer dat gaat over het loslaten van relaties."
-            },
-            {
-                id: 10,
-                country: "Denemarken",
-                artist: "Sissal",
-                song: "Hallucination",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/edit4.webp",
-                youtubeId: "2DFKJBppnjk",
-                semifinal: 2,
-                qualified: false,
-                description: "Sissal vertegenwoordigt Denemarken met 'Hallucination', een dromerige popsong met noordse invloeden die een surreële liefde beschrijft."
-            },
-            {
-                id: 11,
-                country: "Estland",
-                artist: "Tommy Cash",
-                song: "Espresso Macchiato",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/10.jpg",
-                youtubeId: "u8GKufdG1bY",
-                semifinal: 1,
-                qualified: false,
-                description: "Estland stuurt Tommy Cash met het controversiële 'Espresso Macchiato', een trap-nummer met unieke visuele elementen en provocatieve tekst."
-            },
-            {
-                id: 12,
-                country: "Finland",
-                artist: "Erika Vikman",
-                song: "ICH KOMME",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-04/LOVETAR_1-NelliKentta.jpg",
-                youtubeId: "ZZBfNJWu9Lw",
-                semifinal: 2,
-                qualified: false,
-                description: "Erika Vikman vertegenwoordigt Finland met 'ICH KOMME', een krachtig Duitstalig dansnummer met Finse volksinvloeden."
-            },
-            {
-                id: 13,
-                country: "Frankrijk",
-                artist: "Louane",
-                song: "maman",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/8da8b004-fca4-4d82-bb02-0498282d08da-2.jpg",
-                youtubeId: "YkQSPvRyDo8",
-                semifinal: 0, // Directe finalist
-                qualified: true,
-                description: "Louane zingt voor Frankrijk het emotionele 'maman', een liefdevolle ode aan moederschap die Franse chanson-elementen combineert met moderne pop."
-            },
-            {
-                id: 14,
-                country: "Georgië",
-                artist: "Mariam Shengelia",
-                song: "Freedom",
-                image: "https://eurovision.tv/sites/default/files/styles/crop_teaser_image/public/media/image/2024-03/IMG_4371.jpg",
-                youtubeId: "FkLr8SIZoqk",
-                semifinal: 2,
-                qualified: false,
-                description: "Mariam Shengelia vertegenwoordigt Georgië met 'Freedom', een krachtig nummer over vrijheid en emancipatie met Kaukasische muzikale elementen."
-            },
-            {
-                id: 15,
-                country: "Duitsland",
-                artist: "Abor & Tynna",
-                song: "Baller",
-                image: "https://eurovision.tv/sites/
+</html>
