@@ -1,4 +1,299 @@
-<!DOCTYPE html>
+// Initialisatie als pagina geladen is
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vul alle deelnemers
+            renderParticipants('allParticipants', participants);
+
+            // Zoekfunctionaliteit
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filteredParticipants = participants.filter(p => 
+                        p.country.toLowerCase().includes(searchTerm) || 
+                        p.artist.toLowerCase().includes(searchTerm) || 
+                        p.song.toLowerCase().includes(searchTerm)
+                    );
+                    renderParticipants('allParticipants', filteredParticipants);
+                });
+            }
+
+            // Initialiseer Sortable voor drag & drop
+            const sortableList = document.getElementById('selectedEntries');
+            if (sortableList) {
+                new Sortable(sortableList, {
+                    animation: 150,
+                    ghostClass: 'bg-light',
+                    onEnd: function() {
+                        updateSelectedEntries();
+                    }
+                });
+            }
+
+            // Formulier verzenden met confirmatie modal
+            const pronostiekForm = document.getElementById('pronostiekForm');
+            if (pronostiekForm) {
+                pronostiekForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    if (selectedEntries.length !== 5) {
+                        alert('Selecteer precies 5 landen voor je pronostiek!');
+                        return;
+                    }
+                    
+                    if (!document.getElementById('deelnemer').value) {
+                        alert('Selecteer je naam uit de lijst!');
+                        return;
+                    }
+                    
+                    // Toon de bevestigingsmodal
+                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                    confirmModal.show();
+                });
+            }
+            
+            // Definitieve bevestiging
+            const confirmBtn = document.getElementById('confirmSubmission');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    const deelnemer = document.getElementById('deelnemer').value;
+                    
+                    // Controleer of deze deelnemer al een voorspelling heeft
+                    const existingPrediction = predictions.find(p => p.name === deelnemer);
+                    if (existingPrediction) {
+                        alert('Je hebt al een voorspelling ingediend!');
+                        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+                        confirmModal.hide();
+                        return;
+                    }
+                    
+                    // Nieuwe voorspelling toevoegen
+                    const prediction = {
+                        name: deelnemer,
+                        entries: [...selectedEntries]
+                    };
+                    
+                    predictions.push(prediction);
+                    
+                    // Sla de voorspellingen op in localStorage
+                    saveToLocalStorage();
+                    
+                    // Verberg het formulier en toon bedankbericht
+                    document.getElementById('pronostiekForm').classList.add('hidden');
+                    document.getElementById('thankYouMessage').classList.remove('hidden');
+                    
+                    // Toon resultaten sectie
+                    document.getElementById('resultaten').classList.remove('hidden');
+                    resultsVisible = true;
+                    
+                    // Update resultaten tabel
+                    updateResults();
+                    
+                    // Sluit de modal
+                    const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+                    confirmModal.hide();
+                    
+                    // Markeer deze sectie als ingediend
+                    document.getElementById('pronostiek').setAttribute('data-submitted', 'true');
+                    
+                    // Scroll naar resultaten
+                    document.getElementById('resultaten').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Voeg event listener toe aan deelnemer dropdown
+            const deelnemerSelect = document.getElementById('deelnemer');
+            if (deelnemerSelect) {
+                deelnemerSelect.addEventListener('change', updateFormStatus);
+            }
+            
+            // Laad opgeslagen voorspellingen
+            loadFromLocalStorage();
+            
+            // Laat resultaten pas zien na het indienen van een formulier
+            if (predictions.length > 0 && !resultsVisible) {
+                document.getElementById('resultaten').classList.remove('hidden');
+                resultsVisible = true;
+                updateResults();
+            }
+        });        // Update de geselecteerde items in de Top 5
+        function updateSelectedEntries() {
+            const container = document.getElementById('selectedEntries');
+            
+            if (selectedEntries.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">Klik op landen in de lijst hierboven om ze toe te voegen aan je Top 5.</div>';
+                document.getElementById('dragInstructions').classList.add('hidden');
+                return;
+            }
+            
+            document.getElementById('dragInstructions').classList.remove('hidden');
+            
+            // Haal huidige elementen op om volgorde te behouden
+            const currentElements = Array.from(container.querySelectorAll('.selected-entry'));
+            const currentIds = currentElements.map(el => parseInt(el.getAttribute('data-participant-id')));
+            
+            // Sorteer de geselecteerde entries op basis van de huidige DOM volgorde
+            const sortedEntries = [];
+            
+            // Eerst voeg bestaande items toe in de juiste volgorde
+            currentIds.forEach(id => {
+                const entry = selectedEntries.find(e => e.id === id);
+                if (entry) {
+                    sortedEntries.push(entry);
+                }
+            });
+            
+            // Voeg nieuwe items toe aan het einde
+            selectedEntries.forEach(entry => {
+                if (!currentIds.includes(entry.id)) {
+                    sortedEntries.push(entry);
+                }
+            });
+            
+            selectedEntries = sortedEntries;
+            
+            // Wis de container en vul opnieuw
+            container.innerHTML = '';
+            
+            selectedEntries.forEach((entry, index) => {
+                const entryElement = document.createElement('div');
+                entryElement.className = 'selected-entry';
+                entryElement.setAttribute('data-participant-id', entry.id);
+                
+                entryElement.innerHTML = `
+                    <div>
+                        <strong>${index + 1}. ${entry.flag} ${entry.country}</strong> - ${entry.artist} (${entry.song})
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger remove-entry" data-participant-id="${entry.id}">
+                        <i class="bi bi-x"></i> Verwijderen
+                    </button>
+                `;
+                
+                container.appendChild(entryElement);
+            });
+            
+            // Voeg event listeners toe aan verwijderknoppen
+            const removeButtons = container.querySelectorAll('.remove-entry');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const participantId = parseInt(this.getAttribute('data-participant-id'));
+                    selectedEntries = selectedEntries.filter(entry => entry.id !== participantId);
+                    
+                    // Update ook de knop in de lijst
+                    const addButton = document.getElementById(`addToTop5_${participantId}`);
+                    if (addButton) {
+                        addButton.textContent = 'Toevoegen aan mijn Top 5';
+                        addButton.classList.remove('btn-danger');
+                        addButton.classList.add('btn-red-sebastian');
+                    }
+                    
+                    updateSelectedEntries();
+                });
+            });
+        }
+
+        // Update resultaten tabel
+        function updateResults() {
+            if (predictions.length === 0) {
+                document.getElementById('resultsTableBody').innerHTML = '<tr><td colspan="5" class="text-center">Nog geen voorspellingen ingediend.</td></tr>';
+                document.getElementById('allPredictions').innerHTML = '<div class="alert alert-info">Er zijn nog geen voorspellingen ingediend.</div>';
+                return;
+            }
+            
+            // Bereken punten voor elk land
+            const countryPoints = {};
+            participants.forEach(p => {
+                countryPoints[p.country] = 0;
+            });
+            
+            // Puntentelling: 12, 10, 8, 6, 4 punten
+            const pointsScale = [12, 10, 8, 6, 4];
+            
+            predictions.forEach(prediction => {
+                prediction.entries.forEach((entry, index) => {
+                    countryPoints[entry.country] += pointsScale[index];
+                });
+            });
+            
+            // Sorteer landen op punten
+            const sortedCountries = Object.entries(countryPoints)
+                .filter(([_, points]) => points > 0)
+                .sort((a, b) => b[1] - a[1])
+                .map(([country, points]) => {
+                    const participantInfo = participants.find(p => p.country === country);
+                    return {
+                        country,
+                        flag: participantInfo.flag,
+                        points,
+                        artist: participantInfo.artist,
+                        song: participantInfo.song
+                    };
+                });
+            
+            // Vul de resultaten tabel
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+            
+            if (sortedCountries.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Nog geen punten toegekend.</td></tr>';
+            } else {
+                sortedCountries.forEach((result, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${index + 1}</strong></td>
+                        <td>${result.flag} ${result.country}</td>
+                        <td>${result.artist}</td>
+                        <td>${result.song}</td>
+                        <td><strong>${result.points}</strong></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            // Toon alle voorspellingen
+            const predictionsContainer = document.getElementById('allPredictions');
+            predictionsContainer.innerHTML = '';
+            
+            predictions.forEach(prediction => {
+                const predCard = document.createElement('div');
+                predCard.className = 'card mb-3';
+                
+                let entriesHtml = '';
+                prediction.entries.forEach((entry, index) => {
+                    entriesHtml += `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>${index + 1}. ${entry.flag} ${entry.country} - ${entry.artist}</span>
+                            <span class="badge bg-primary rounded-pill">${pointsScale[index]} ptn</span>
+                        </li>
+                    `;
+                });
+                
+                predCard.innerHTML = `
+                    <div class="card-header">
+                        <strong>${prediction.name}</strong>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        ${entriesHtml}
+                    </ul>
+                `;
+                
+                predictionsContainer.appendChild(predCard);
+            });
+        }
+
+        // Opslaan in localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('eurovisionPredictions', JSON.stringify(predictions));
+        }
+
+        // Laden uit localStorage
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('eurovisionPredictions');
+            if (saved) {
+                predictions = JSON.parse(saved);
+            }
+        }<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -110,30 +405,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .password-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle, var(--eurovision-dark) 0%, #000000 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        
-        .password-container {
-            background: linear-gradient(135deg, #250911 0%, #3a0a11 100%);
-            padding: 50px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 550px;
-            text-align: center;
-            border: 1px solid rgba(249, 59, 128, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
         .results-table {
@@ -287,9 +558,7 @@
     </style>
 </head>
 <body>
-    <!-- Password Protection verwijderd -->
-    
-    <!-- Main Content (nu direct zichtbaar) -->
+    <!-- Main Content - direct zichtbaar -->
     <div id="mainContent">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
@@ -450,13 +719,103 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     
     <script>
-        // Constanten - wachtwoordvalidatie verwijderd
-        let predictions = [];
+        // Globale variabelen
+        let predictions = [        ];
+        
+        // Check of de gebruiker al heeft ingediend
+        function hasUserSubmitted(userName) {
+            return predictions.some(prediction => prediction.name === userName);
+        }
+        
+        // Update form status bij verandering van deelnemer
+        function updateFormStatus() {
+            const deelnemerSelect = document.getElementById('deelnemer');
+            const selectedName = deelnemerSelect.value;
+            
+            if (selectedName && hasUserSubmitted(selectedName)) {
+                // Verberg het formulier en toon bedankbericht
+                document.getElementById('pronostiekForm').classList.add('hidden');
+                document.getElementById('thankYouMessage').classList.remove('hidden');
+                document.getElementById('pronostiek').setAttribute('data-submitted', 'true');
+            } else {
+                // Toon het formulier en verberg bedankbericht
+                document.getElementById('pronostiekForm').classList.remove('hidden');
+                document.getElementById('thankYouMessage').classList.add('hidden');
+                document.getElementById('pronostiek').setAttribute('data-submitted', 'false');
+            }
+        }
+
+        // Render deelnemers in container
+        function renderParticipants(containerId, participantList) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            participantList.forEach(participant => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+                
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                item.setAttribute('data-participant-id', participant.id);
+                item.innerHTML = `
+                    <h5>
+                        <span class="country-flag">${participant.flag}</span>
+                        ${participant.country} - ${participant.artist}
+                    </h5>
+                    <p class="participant-description">${participant.song}</p>
+                    <p class="participant-description">${participant.description}</p>
+                    <button class="btn btn-red-sebastian btn-sm" data-participant-id="${participant.id}" id="addToTop5_${participant.id}">
+                        Toevoegen aan mijn Top 5
+                    </button>
+                `;
+                col.appendChild(item);
+                container.appendChild(col);
+                
+                // Voeg event listener toe aan de knop
+                const addButton = item.querySelector(`#addToTop5_${participant.id}`);
+                addButton.addEventListener('click', function() {
+                    const participantId = parseInt(this.getAttribute('data-participant-id'));
+                    toggleParticipantSelection(participantId);
+                });
+            });
+        }
+        
+        // Toggle selectie van een deelnemer voor de top 5
+        function toggleParticipantSelection(participantId) {
+            const participant = participants.find(p => p.id === participantId);
+            const isSelected = selectedEntries.some(entry => entry.id === participantId);
+            
+            if (isSelected) {
+                // Verwijder uit Top 5
+                selectedEntries = selectedEntries.filter(entry => entry.id !== participantId);
+                
+                // Update de knoptekst
+                const button = document.getElementById(`addToTop5_${participantId}`);
+                button.textContent = 'Toevoegen aan mijn Top 5';
+                button.classList.remove('btn-danger');
+                button.classList.add('btn-red-sebastian');
+            } else {
+                // Voeg toe aan Top 5
+                if (selectedEntries.length < 5) {
+                    selectedEntries.push(participant);
+                    
+                    // Update de knoptekst
+                    const button = document.getElementById(`addToTop5_${participantId}`);
+                    button.textContent = 'Verwijderen uit Top 5';
+                    button.classList.remove('btn-red-sebastian');
+                    button.classList.add('btn-danger');
+                } else {
+                    alert('Je kunt maximaal 5 landen selecteren. Verwijder eerst een land om een nieuwe toe te voegen.');
+                    return;
+                }
+            }
+            
+            // Update de weergave
+            updateSelectedEntries();
+        }
         let selectedEntries = [];
         let resultsVisible = false;
         
-        // Wachtwoordbeveiliging verwijderd - gebruiker heeft direct toegang
-
         // Eurovision 2025 deelnemers data met landvlaggen
         const participants = [
             {
