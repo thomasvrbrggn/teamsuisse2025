@@ -287,22 +287,10 @@
     </style>
 </head>
 <body>
-    <!-- Password Protection -->
-    <div class="password-screen" id="passwordScreen">
-        <div class="heart-pattern"></div>
-        <div class="password-container">
-            <h2 class="mb-4 red-sebastian-title">#TEAMSUISSE PRONOSTIEK</h2>
-            <p class="mb-4">Voer het wachtwoord in om toegang te krijgen tot de Eurovisiesongfestival 2025 pronostiek.</p>
-            <div class="mb-4">
-                <input type="password" class="form-control form-control-lg py-3" id="passwordInput" style="color: white; font-weight: 500;" placeholder="Wachtwoord (tip: wie was vroeger het baasje?)">
-            </div>
-            <button type="button" class="btn btn-red-sebastian btn-lg py-3 px-5 w-100" id="submitPassword">INLOGGEN</button>
-            <p class="text-danger mt-3 hidden" id="passwordError">Onjuist wachtwoord. Probeer opnieuw.</p>
-        </div>
-    </div>
-
-    <!-- Main Content (hidden until password entered) -->
-    <div id="mainContent" class="hidden">
+    <!-- Password Protection verwijderd -->
+    
+    <!-- Main Content (nu direct zichtbaar) -->
+    <div id="mainContent">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <a class="navbar-brand" href="#">
@@ -462,42 +450,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     
     <script>
-        // Constanten
-        const correctPassword = "Nikolaasje"; // Aangepast wachtwoord
+        // Constanten - wachtwoordvalidatie verwijderd
         let predictions = [];
         let selectedEntries = [];
         let resultsVisible = false;
         
-        // Wachtwoordbeveiliging
-        window.onload = function() {
-            const submitBtn = document.getElementById('submitPassword');
-            if (submitBtn) {
-                submitBtn.addEventListener('click', validatePassword);
-            }
-            
-            const passwordField = document.getElementById('passwordInput');
-            if (passwordField) {
-                passwordField.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        validatePassword();
-                    }
-                });
-            }
-        };
-        
-        function validatePassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const passwordError = document.getElementById('passwordError');
-            const passwordScreen = document.getElementById('passwordScreen');
-            const mainContent = document.getElementById('mainContent');
-            
-            if (passwordInput.value === correctPassword) {
-                passwordScreen.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-            } else {
-                passwordError.classList.remove('hidden');
-            }
-        }
+        // Wachtwoordbeveiliging verwijderd - gebruiker heeft direct toegang
 
         // Eurovision 2025 deelnemers data met landvlaggen
         const participants = [
