@@ -462,32 +462,42 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     
     <script>
-        // Wachtwoordbeveiliging
+        // Constanten
         const correctPassword = "Nikolaasje"; // Aangepast wachtwoord
+        let predictions = [];
+        let selectedEntries = [];
+        let resultsVisible = false;
         
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitPasswordBtn = document.getElementById('submitPassword');
-            const passwordInput = document.getElementById('passwordInput');
-            
-            submitPasswordBtn.addEventListener('click', checkPassword);
-            
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-            
-            function checkPassword() {
-                const enteredPassword = passwordInput.value;
-                
-                if (enteredPassword === correctPassword) {
-                    document.getElementById('passwordScreen').classList.add('hidden');
-                    document.getElementById('mainContent').classList.remove('hidden');
-                } else {
-                    document.getElementById('passwordError').classList.remove('hidden');
-                }
+        // Wachtwoordbeveiliging
+        window.onload = function() {
+            const submitBtn = document.getElementById('submitPassword');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', validatePassword);
             }
-        });
+            
+            const passwordField = document.getElementById('passwordInput');
+            if (passwordField) {
+                passwordField.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        validatePassword();
+                    }
+                });
+            }
+        };
+        
+        function validatePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordError = document.getElementById('passwordError');
+            const passwordScreen = document.getElementById('passwordScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (passwordInput.value === correctPassword) {
+                passwordScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            } else {
+                passwordError.classList.remove('hidden');
+            }
+        }
 
         // Eurovision 2025 deelnemers data met landvlaggen
         const participants = [
