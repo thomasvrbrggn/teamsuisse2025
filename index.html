@@ -190,7 +190,8 @@
         }
         
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.8); /* Lichter gemaakt voor betere leesbaarheid */
+            font-weight: 500; /* Iets dikker lettertype voor betere leesbaarheid */
         }
         
         footer {
@@ -293,9 +294,9 @@
             <h2 class="mb-4 red-sebastian-title">#TEAMSUISSE PRONOSTIEK</h2>
             <p class="mb-4">Voer het wachtwoord in om toegang te krijgen tot de Eurovisiesongfestival 2025 pronostiek.</p>
             <div class="mb-4">
-                <input type="password" class="form-control form-control-lg py-3" id="passwordInput" placeholder="Wachtwoord (tip: wie was vroeger het baasje?)">
+                <input type="password" class="form-control form-control-lg py-3" id="passwordInput" style="color: white; font-weight: 500;" placeholder="Wachtwoord (tip: wie was vroeger het baasje?)">
             </div>
-            <button class="btn btn-red-sebastian btn-lg py-3 px-5 w-100" id="submitPassword">INLOGGEN</button>
+            <button type="button" class="btn btn-red-sebastian btn-lg py-3 px-5 w-100" id="submitPassword">INLOGGEN</button>
             <p class="text-danger mt-3 hidden" id="passwordError">Onjuist wachtwoord. Probeer opnieuw.</p>
         </div>
     </div>
@@ -464,20 +465,27 @@
         // Wachtwoordbeveiliging
         const correctPassword = "Nikolaasje"; // Aangepast wachtwoord
         
-        document.getElementById('submitPassword').addEventListener('click', function() {
-            const passwordInput = document.getElementById('passwordInput').value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitPasswordBtn = document.getElementById('submitPassword');
+            const passwordInput = document.getElementById('passwordInput');
             
-            if (passwordInput === correctPassword) {
-                document.getElementById('passwordScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-            } else {
-                document.getElementById('passwordError').classList.remove('hidden');
-            }
-        });
-        
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('submitPassword').click();
+            submitPasswordBtn.addEventListener('click', checkPassword);
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === correctPassword) {
+                    document.getElementById('passwordScreen').classList.add('hidden');
+                    document.getElementById('mainContent').classList.remove('hidden');
+                } else {
+                    document.getElementById('passwordError').classList.remove('hidden');
+                }
             }
         });
 
